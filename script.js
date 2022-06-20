@@ -1,13 +1,16 @@
 // SELECTORS
-const quote = document.getElementById('quote')
+const quote = document.getElementById('quote-text')
 const author = document.getElementById('author')
+const nextBtn = document.getElementById('new-quote')
+const twitterBtn = document.getElementById('twitter')
 
 //make the variable global
 let quoteArray = [1]
 
 
 //EVENT LISTENERS
-
+getQuoteArray()
+nextBtn.addEventListener('click', getQuote)
 
 
 //FUNCTIONS
@@ -30,10 +33,15 @@ async function getQuoteArray() {
 function getQuote() {
     const index = Math.floor(Math.random() * quoteArray.length)
     const randomQuote = quoteArray[index]
-    console.log(randomQuote)
-}
+    //make font size of long quotes smaller
+    quote.innerText = randomQuote.text
+    if (randomQuote.text.length > 120) {
+        quote.classList.add('long-quote')
+    }
+    //in case of no author, display 'Anonymous'
+    author.innerText = randomQuote.author ? randomQuote.author : 'Anonymous'
 
-getQuoteArray()
+}
 
 
 
