@@ -11,10 +11,10 @@ let quoteArray = [1]
 //EVENT LISTENERS
 getQuoteArray()
 nextBtn.addEventListener('click', getQuote)
+twitterBtn.addEventListener('click', tweetQuote)
 
 
 //FUNCTIONS
-//get random number
 
 async function getQuoteArray() {
     // get array of quotes from API
@@ -22,7 +22,9 @@ async function getQuoteArray() {
     try {
         const response = await fetch(url)
         quoteArray = await response.json()
+        //Get quote on load
         getQuote()
+        
     }
 
     catch(error) {
@@ -30,6 +32,7 @@ async function getQuoteArray() {
     }
 }
 
+// get random quote from the array
 function getQuote() {
     const index = Math.floor(Math.random() * quoteArray.length)
     const randomQuote = quoteArray[index]
@@ -37,10 +40,18 @@ function getQuote() {
     quote.innerText = randomQuote.text
     if (randomQuote.text.length > 120) {
         quote.classList.add('long-quote')
+    } else {
+        quote.classList.remove('long-quote')
     }
     //in case of no author, display 'Anonymous'
     author.innerText = randomQuote.author ? randomQuote.author : 'Anonymous'
+}
 
+
+//tweet current quote
+function tweetQuote() {
+    const href = `https://twitter.com/intent/tweet?text=${quote.innerText} - ${author.innerText}`
+    window.open(href, '_blank')
 }
 
 
