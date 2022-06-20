@@ -1,15 +1,20 @@
 // SELECTORS
+const quoteContainer = document.getElementById('quote-container')
 const quote = document.getElementById('quote-text')
 const author = document.getElementById('author')
 const nextBtn = document.getElementById('new-quote')
 const twitterBtn = document.getElementById('twitter')
+const loader = document.querySelector('.loader')
 
 //make the variable global
 let quoteArray = [1]
 
+//get first quote on load
+getQuoteArray()
+
 
 //EVENT LISTENERS
-getQuoteArray()
+
 nextBtn.addEventListener('click', getQuote)
 twitterBtn.addEventListener('click', tweetQuote)
 
@@ -19,6 +24,7 @@ twitterBtn.addEventListener('click', tweetQuote)
 async function getQuoteArray() {
     // get array of quotes from API
     const url = 'https://type.fit/api/quotes'
+    addLoader()
     try {
         const response = await fetch(url)
         quoteArray = await response.json()
@@ -34,10 +40,13 @@ async function getQuoteArray() {
 
 // get random quote from the array
 function getQuote() {
+    addLoader()
     const index = Math.floor(Math.random() * quoteArray.length)
     const randomQuote = quoteArray[index]
-    //make font size of long quotes smaller
+    
+    removeLoader()
     quote.innerText = randomQuote.text
+    //make font size of long quotes smaller
     if (randomQuote.text.length > 120) {
         quote.classList.add('long-quote')
     } else {
@@ -53,6 +62,18 @@ function tweetQuote() {
     const href = `https://twitter.com/intent/tweet?text=${quote.innerText} - ${author.innerText}`
     window.open(href, '_blank')
 }
+
+//loader 
+function addLoader() {
+    loader.hidden = false
+    quoteContainer.hidden = true
+}
+
+function removeLoader() {
+    loader.hidden = true
+    quoteContainer.hidden = false
+}
+
 
 
 
