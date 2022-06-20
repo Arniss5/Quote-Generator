@@ -7,7 +7,7 @@ const twitterBtn = document.getElementById('twitter')
 const loader = document.querySelector('.loader')
 
 //make the variable global
-let quoteArray = [1]
+let quoteArray = []
 
 //get first quote on load
 getQuoteArray()
@@ -32,9 +32,11 @@ async function getQuoteArray() {
         getQuote()
         
     }
-
+    // handle error: use local file
     catch(error) {
-        console.log('That didnt work')
+        console.log('Error thrown while fetching API, using local file')
+        quoteArray = localQuotes
+        getQuote()
     }
 }
 
@@ -55,7 +57,6 @@ function getQuote() {
     //in case of no author, display 'Anonymous'
     author.innerText = randomQuote.author ? randomQuote.author : 'Anonymous'
 }
-
 
 //tweet current quote
 function tweetQuote() {
